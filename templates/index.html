@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IncluLearn - Plataforma Educativa Inclusiva</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+            --light: #F8F9FA;
+            --dark: #212529;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 100px 0;
+        }
+        .feature-card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        .btn-primary:hover {
+            background-color: #e68100;
+            border-color: #e68100;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap"></i> IncluLearn
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="/">Inicio</a>
+                <a class="nav-link" href="/cursos">Cursos</a>
+                <a class="nav-link" href="/resolver">Resolver Problemas</a>
+                <a class="nav-link" href="/recomendaciones">Recomendaciones</a>
+                <a class="nav-link" href="/login" id="loginLink">Iniciar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Aprendizaje Accesible para Todos</h1>
+            <p class="lead">Plataforma educativa que combina tecnología e inclusión para una experiencia de aprendizaje personalizada</p>
+            <a href="/registro" class="btn btn-light btn-lg mt-3">Comenzar Ahora</a>
+        </div>
+    </section>
+
+    <!-- User Info -->
+    <div class="container my-4">
+        <div id="userInfo"></div>
+    </div>
+
+    <!-- Features -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <h2 class="fw-bold">¿Qué problemas resolvemos?</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-eye fa-3x text-primary mb-3"></i>
+                            <h5>Accesibilidad Educativa</h5>
+                            <p class="text-muted">Eliminamos barreras para personas con discapacidades visuales, auditivas o motoras</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+                            <h5>Sobrecarga de Información</h5>
+                            <p class="text-muted">Orientación personalizada para evitar la saturación de contenidos</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-tools fa-3x text-primary mb-3"></i>
+                            <h5>Herramientas Integradas</h5>
+                            <p class="text-muted">Todo en una plataforma: aprender, practicar y recibir recomendaciones</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <h2 class="fw-bold">Nuestros Módulos</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-book fa-3x text-success mb-3"></i>
+                            <h5>📚 Plataforma de Aprendizaje</h5>
+                            <p>Cursos accesibles con múltiples formatos y evaluaciones adaptativas</p>
+                            <a href="/cursos" class="btn btn-outline-success">Explorar Cursos</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-calculator fa-3x text-warning mb-3"></i>
+                            <h5>🧮 Resolución de Problemas</h5>
+                            <p>Herramienta inteligente para resolver ejercicios paso a paso</p>
+                            <a href="/resolver" class="btn btn-outline-warning">Probar Herramienta</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card feature-card shadow">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-robot fa-3x text-info mb-3"></i>
+                            <h5>🤖 Recomendación Inteligente</h5>
+                            <p>Sugerencias personalizadas basadas en tu progreso y preferencias</p>
+                            <a href="/recomendaciones" class="btn btn-outline-info">Ver Recomendaciones</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Verificar estado del usuario
+        fetch('/api/user-data')
+            .then(response => response.json())
+            .then(data => {
+                const userInfo = document.getElementById('userInfo');
+                const loginLink = document.getElementById('loginLink');
+                
+                if (data.logged_in) {
+                    loginLink.textContent = 'Mi Cuenta';
+                    userInfo.innerHTML = `
+                        <div class="alert alert-info">
+                            <h4>¡Bienvenido, ${data.nombre}!</h4>
+                            <p>Has iniciado sesión correctamente en IncluLearn</p>
+                        </div>
+                    `;
+                } else {
+                    userInfo.innerHTML = `
+                        <div class="alert alert-warning">
+                            <p>💡 <strong>Modo demostración:</strong> Puedes registrarte o iniciar sesión para probar todas las funciones</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.log('Error:', error);
+            });
+    </script>
+</body>
+</html>

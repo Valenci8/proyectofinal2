@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso - IncluLearn</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+        }
+        .hero-curso {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 60px 0;
+        }
+        .lesson-card {
+            border: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+        }
+        .lesson-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .lesson-completed {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .progress-bar {
+            background-color: var(--accent);
+        }
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        /* BADGES CORREGIDOS */
+        .badge-video { 
+            background-color: #dc3545 !important; 
+            color: white !important;
+        }
+        .badge-ejercicios { 
+            background-color: #fd7e14 !important; 
+            color: white !important;
+        }
+        .badge-evaluacion { 
+            background-color: #6f42c1 !important; 
+            color: white !important;
+        }
+        .badge-practica { 
+            background-color: #20c997 !important; 
+            color: white !important;
+        }
+        .badge-proyecto { 
+            background-color: #0dcaf0 !important; 
+            color: black !important;
+        }
+        .badge-interactivo { 
+            background-color: #ffc107 !important; 
+            color: black !important;
+        }
+        
+        .badge {
+            font-size: 0.75em !important;
+            font-weight: 600 !important;
+            padding: 0.35em 0.65em !important;
+            margin-left: 5px;
+        }
+        
+        .lesson-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        .lesson-completed .lesson-number {
+            background: #28a745;
+        }
+        
+        /* Mejorar enlaces */
+        .lesson-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .lesson-link:hover {
+            color: inherit;
+        }
+
+        /* NUEVO: Estilo para enlace directo a evaluación */
+        .evaluacion-directa {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+        .evaluacion-directa:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap"></i> IncluLearn
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Inicio</a>
+                <a class="nav-link" href="/cursos">Cursos</a>
+                <a class="nav-link" href="/resolver">Resolver Problemas</a>
+                <a class="nav-link" href="/recomendaciones">Recomendaciones</a>
+                <a class="nav-link" href="/login" id="loginLink">Iniciar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading -->
+    <div id="loading" class="container my-5">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando curso...</span>
+            </div>
+            <p class="mt-2">Cargando contenido del curso...</p>
+        </div>
+    </div>
+
+    <!-- Curso Content -->
+    <div id="cursoContent" style="display: none;">
+        <!-- Hero Section -->
+        <section class="hero-curso">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/" class="text-white">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="/cursos" class="text-white">Cursos</a></li>
+                        <li class="breadcrumb-item active text-white" id="breadcrumbCurso">Curso</li>
+                    </ol>
+                </nav>
+                
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <span class="badge bg-light text-dark mb-3" id="categoriaBadge">Categoría</span>
+                        <h1 class="display-5 fw-bold" id="cursoTitulo">Título del Curso</h1>
+                        <p class="lead" id="cursoDescripcion">Descripción del curso</p>
+                        
+                        <div class="d-flex flex-wrap gap-3 mb-3">
+                            <span class="text-white">
+                                <i class="fas fa-user-graduate"></i> <span id="cursoInstructor">Instructor</span>
+                            </span>
+                            <span class="text-white">
+                                <i class="fas fa-clock"></i> <span id="cursoDuracion">Duración</span>
+                            </span>
+                            <span class="text-white">
+                                <i class="fas fa-star"></i> <span id="cursoRating">Rating</span>
+                            </span>
+                            <span class="text-white">
+                                <i class="fas fa-users"></i> <span id="cursoEstudiantes">Estudiantes</span>
+                            </span>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-light btn-lg" onclick="comenzarCurso()">
+                                <i class="fas fa-play-circle"></i> Comenzar Curso
+                            </button>
+                            <button class="btn btn-outline-light btn-lg" onclick="toggleFavorito()">
+                                <i class="far fa-heart" id="favoritoIcon"></i> Favorito
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <div class="card bg-dark bg-opacity-50 text-white">
+                            <div class="card-body">
+                                <h5>Tu Progreso</h5>
+                                <div class="progress mb-3" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%;" 
+                                         id="progresoBar">0%</div>
+                                </div>
+                                <p id="progresoText">0 de 0 lecciones completadas</p>
+                                <button class="btn btn-outline-light btn-sm" onclick="reiniciarProgreso()">
+                                    <i class="fas fa-redo"></i> Reiniciar Progreso
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objetivos del Curso -->
+        <section class="py-4 bg-light">
+            <div class="container">
+                <h4>🎯 Objetivos de Aprendizaje</h4>
+                <div class="row" id="objetivosList">
+                    <!-- Objetivos se cargan aquí -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contenido del Curso -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                    <!-- Lecciones -->
+                    <div class="col-lg-8">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3>📚 Contenido del Curso</h3>
+                            <span class="badge bg-primary" id="totalLecciones">0 lecciones</span>
+                        </div>
+
+                        <!-- NUEVO: Botón de acceso directo a evaluación de matemáticas -->
+                        <div class="mb-4" id="evaluacionDirectaContainer" style="display: none;">
+                            <div class="card evaluacion-directa">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-rocket me-2"></i>
+                                        Acceso Directo a Evaluación
+                                    </h5>
+                                    <p class="card-text mb-3">
+                                        ¿Quieres probar directamente la evaluación final de matemáticas?
+                                    </p>
+                                    <a href="/evaluacion-matematicas" class="btn btn-light btn-lg">
+                                        <i class="fas fa-play-circle me-2"></i>
+                                        Ir a Evaluación de Matemáticas
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="listaLecciones">
+                            <!-- Lecciones se cargan aquí -->
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="card shadow sticky-top" style="top: 20px;">
+                            <div class="card-body">
+                                <h5>♿ Características Accesibles</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-closed-captioning text-primary"></i> Subtítulos en videos
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-volume-up text-primary"></i> Descripción de audio
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-palette text-primary"></i> Alto contraste
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-keyboard text-primary"></i> Navegación por teclado
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-expand text-primary"></i> Texto escalable
+                                    </li>
+                                </ul>
+                                
+                                <hr>
+                                
+                                <h6>Recursos Adicionales</h6>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="descargarMaterial()">
+                                        <i class="fas fa-download"></i> Material de Apoyo
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="verCertificado()">
+                                        <i class="fas fa-award"></i> Certificado
+                                    </button>
+                                    <button class="btn btn-outline-info btn-sm" onclick="compartirCurso()">
+                                        <i class="fas fa-share-alt"></i> Compartir Curso
+                                    </button>
+                                    <!-- NUEVO: Enlace a evaluación en sidebar -->
+                                    <a href="/evaluacion-matematicas" class="btn btn-outline-warning btn-sm">
+                                        <i class="fas fa-file-alt"></i> Evaluación Matemáticas
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Error Message -->
+    <div id="errorMessage" class="container my-5" style="display: none;">
+        <div class="alert alert-danger">
+            <h4>❌ Error al cargar el curso</h4>
+            <p>No se pudo cargar la información del curso. Por favor, intenta nuevamente.</p>
+            <a href="/cursos" class="btn btn-outline-danger">Volver a Cursos</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Obtener ID del curso de la URL
+        const cursoId = window.location.pathname.split('/').pop();
+        let cursoData = null;
+        let leccionesCompletadas = 0;
+
+        // Cargar datos del curso
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarCurso(cursoId);
+            actualizarEstadoUsuario();
+            cargarProgresoCurso();
+        });
+
+        function cargarCurso(id) {
+            fetch(`/api/curso/${id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta del servidor');
+                    }
+                    return response.json();
+                })
+                .then(curso => {
+                    if (!curso.titulo) {
+                        throw new Error('Curso no encontrado');
+                    }
+                    
+                    cursoData = curso;
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('cursoContent').style.display = 'block';
+                    
+                    // Actualizar información del curso
+                    document.getElementById('cursoTitulo').textContent = curso.titulo;
+                    document.getElementById('cursoDescripcion').textContent = curso.descripcion;
+                    document.getElementById('categoriaBadge').textContent = curso.categoria;
+                    document.getElementById('breadcrumbCurso').textContent = curso.titulo;
+                    document.getElementById('cursoInstructor').textContent = curso.instructor || 'Instructor IncluLearn';
+                    document.getElementById('cursoDuracion').textContent = curso.duracion;
+                    document.getElementById('cursoRating').textContent = curso.rating || '4.5';
+                    document.getElementById('cursoEstudiantes').textContent = curso.estudiantes || '1,000+';
+                    
+                    // Mostrar botón de evaluación directa solo para curso de matemáticas
+                    if (cursoId === '1' || curso.categoria?.toLowerCase().includes('matemática')) {
+                        document.getElementById('evaluacionDirectaContainer').style.display = 'block';
+                    }
+                    
+                    // Renderizar objetivos
+                    renderizarObjetivos(curso.objetivos || []);
+                    
+                    // Renderizar lecciones
+                    renderizarLecciones(curso.lecciones || []);
+                    
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'block';
+                });
+        }
+
+        async function cargarProgresoCurso() {
+            try {
+                const response = await fetch(`/api/progreso_curso/${cursoId}`);
+                if (response.ok) {
+                    const progreso = await response.json();
+                    leccionesCompletadas = progreso.lecciones_completadas;
+                    actualizarProgreso();
+                }
+            } catch (error) {
+                console.log('No se pudo cargar el progreso:', error);
+            }
+        }
+
+        function renderizarObjetivos(objetivos) {
+            const objetivosList = document.getElementById('objetivosList');
+            
+            if (objetivos.length === 0) {
+                objetivosList.innerHTML = `
+                    <div class="col-12">
+                        <p class="text-muted">No hay objetivos definidos para este curso.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            objetivosList.innerHTML = objetivos.map(objetivo => `
+                <div class="col-md-6 mb-2">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-check text-success me-2 mt-1"></i>
+                        <span>${objetivo}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderizarLecciones(lecciones) {
+            const listaLecciones = document.getElementById('listaLecciones');
+            const totalLecciones = lecciones.length;
+            
+            document.getElementById('totalLecciones').textContent = `${totalLecciones} lecciones`;
+            
+            if (totalLecciones === 0) {
+                listaLecciones.innerHTML = `
+                    <div class="alert alert-info">
+                        <p>Este curso no tiene lecciones disponibles aún.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            listaLecciones.innerHTML = lecciones.map((leccion, index) => {
+                const badgeClass = getBadgeClass(leccion.tipo);
+                const badgeText = getBadgeText(leccion.tipo);
+                const completada = leccion.completado || false;
+                const cardClass = completada ? 'lesson-card lesson-completed' : 'lesson-card';
+                
+                // USAR ENLACE <a> PARA REDIRIGIR A PÁGINA INDIVIDUAL
+                return `
+                    <a href="/curso/${cursoId}/leccion/${leccion.id}" class="lesson-link">
+                        <div class="${cardClass}">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-number">
+                                            ${completada ? '<i class="fas fa-check"></i>' : (index + 1)}
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">${leccion.titulo}</h6>
+                                            <small class="text-muted">
+                                                <i class="fas fa-clock"></i> ${leccion.duracion} min • 
+                                                <span class="badge ${badgeClass}">${badgeText}</span>
+                                                ${completada ? '<span class="badge bg-success ms-1"><i class="fas fa-check"></i> Completada</span>' : ''}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-play-circle text-primary fa-lg"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+            
+            actualizarProgreso();
+        }
+
+        function getBadgeClass(tipo) {
+            const tipos = {
+                'video': 'badge-video',
+                'ejercicios': 'badge-ejercicios',
+                'evaluacion': 'badge-evaluacion',
+                'practica': 'badge-practica',
+                'proyecto': 'badge-proyecto',
+                'interactivo': 'badge-interactivo'
+            };
+            return tipos[tipo] || 'bg-secondary';
+        }
+
+        function getBadgeText(tipo) {
+            const textos = {
+                'video': '🎥 Video',
+                'ejercicios': '📝 Ejercicios',
+                'evaluacion': '🏆 Evaluación',
+                'practica': '🔧 Práctica',
+                'proyecto': '💼 Proyecto',
+                'interactivo': '🔄 Interactivo'
+            };
+            return textos[tipo] || tipo;
+        }
+
+        function comenzarCurso() {
+            // Ir a la primera lección
+            const primeraLeccion = cursoData?.lecciones?.[0];
+            if (primeraLeccion) {
+                window.location.href = `/curso/${cursoId}/leccion/${primeraLeccion.id}`;
+            }
+        }
+
+        function actualizarProgreso() {
+            const totalLecciones = cursoData?.lecciones?.length || 0;
+            const porcentaje = totalLecciones > 0 ? Math.round((leccionesCompletadas / totalLecciones) * 100) : 0;
+            
+            document.getElementById('progresoBar').style.width = `${porcentaje}%`;
+            document.getElementById('progresoBar').textContent = `${porcentaje}%`;
+            document.getElementById('progresoText').textContent = `${leccionesCompletadas} de ${totalLecciones} lecciones completadas`;
+        }
+
+        function reiniciarProgreso() {
+            if (confirm('¿Estás seguro de que quieres reiniciar tu progreso en este curso?')) {
+                leccionesCompletadas = 0;
+                actualizarProgreso();
+                alert('✅ Progreso reiniciado correctamente');
+            }
+        }
+
+        function toggleFavorito() {
+            const icon = document.getElementById('favoritoIcon');
+            const esFavorito = icon.classList.contains('fas');
+            
+            if (esFavorito) {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                alert('❌ Curso removido de favoritos');
+            } else {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                alert('❤️ Curso agregado a favoritos');
+            }
+        }
+
+        function descargarMaterial() {
+            alert('📥 Descargando material de apoyo...');
+        }
+
+        function verCertificado() {
+            const porcentaje = parseInt(document.getElementById('progresoBar').textContent);
+            if (porcentaje >= 100) {
+                alert('🏆 ¡Felicidades! Puedes descargar tu certificado de finalización.');
+            } else {
+                alert('📝 Completa todas las lecciones para obtener tu certificado.');
+            }
+        }
+
+        function compartirCurso() {
+            const cursoTitulo = document.getElementById('cursoTitulo').textContent;
+            const url = window.location.href;
+            alert(`🔗 Compartir curso: ${cursoTitulo}\n\nURL: ${url}`);
+        }
+
+        function actualizarEstadoUsuario() {
+            fetch('/api/user-data')
+                .then(response => response.json())
+                .then(data => {
+                    const loginLink = document.getElementById('loginLink');
+                    if (data.logged_in) {
+                        loginLink.textContent = `Hola, ${data.nombre}`;
+                        loginLink.href = '#';
+                    }
+                })
+                .catch(error => console.log('Error:', error));
+        }
+
+        // NUEVA FUNCIÓN: Ir directamente a evaluación de matemáticas
+        function irAEvaluacionMatematicas() {
+            window.location.href = '/evaluacion-matematicas';
+        }
+    </script>
+</body>
+</html>

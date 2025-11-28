@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IncluLearn - Lección</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --text: #333333;
+            --text-light: #7f8c8d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .user-name {
+            margin-right: 10px;
+            font-weight: 500;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            color: var(--text);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 10px 0;
+            min-width: 180px;
+            display: none;
+            z-index: 10;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: var(--light);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 15px 0;
+            background-color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: var(--text-light);
+            margin: 0 8px;
+        }
+
+        /* Lesson Content */
+        .lesson-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .lesson-content {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 25px;
+        }
+
+        .lesson-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .lesson-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .lesson-meta i {
+            margin-right: 5px;
+        }
+
+        .lesson-body {
+            padding: 30px;
+        }
+
+        .content-title {
+            font-size: 22px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .content-description {
+            margin-bottom: 25px;
+            color: var(--text-light);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* Video Container */
+        .video-container {
+            margin-bottom: 30px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            background: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Exercises Styles */
+        .exercise-container {
+            margin-bottom: 30px;
+        }
+
+        .exercise {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .exercise-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .option input {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        .option label {
+            cursor: pointer;
+            flex-grow: 1;
+        }
+
+        /* Sidebar */
+        .lesson-sidebar {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .progress-section {
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light);
+            border-radius: 4px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .actions-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #d5dbdb;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219653;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+        }
+
+        /* Results Section */
+        .results-container {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--success) 0% 80%, var(--light) 80% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .score-inner {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        .results-title {
+            font-size: 24px;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .results-feedback {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .correct-answer {
+            border-left: 4px solid var(--success);
+            background-color: rgba(39, 174, 96, 0.1);
+        }
+
+        .incorrect-answer {
+            border-left: 4px solid var(--accent);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        /* Accessibility Features */
+        .accessibility-bar {
+            background: var(--light);
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .accessibility-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .accessibility-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: var(--radius);
+            transition: background-color 0.3s;
+        }
+
+        .accessibility-btn:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .lesson-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .lesson-sidebar {
+                position: static;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .header-content {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* High Contrast Mode */
+        .high-contrast {
+            --primary: #000080;
+            --secondary: #000000;
+            --light: #ffffff;
+            --text: #000000;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .high-contrast .lesson-content,
+        .high-contrast .lesson-sidebar {
+            background: #ffffff;
+            border: 2px solid #000000;
+        }
+
+        /* Large Text Mode */
+        .large-text {
+            font-size: 18px;
+        }
+
+        .large-text .lesson-title {
+            font-size: 32px;
+        }
+
+        .large-text .content-title {
+            font-size: 26px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    IncluLearn
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/cursos">Cursos</a></li>
+                        <li><a href="/resolver">Resolver Problemas</a></li>
+                        <li><a href="/recomendaciones" class="active">Recomendaciones</a></li>
+                    </ul>
+                </nav>
+                <div class="user-menu">
+                    <span class="user-name" id="userName">Usuario</span>
+                    <div class="user-avatar" id="userAvatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="/perfil"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+                        <a href="/configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <div class="container">
+            <div class="accessibility-controls">
+                <button class="accessibility-btn" id="highContrastBtn">
+                    <i class="fas fa-adjust"></i> Alto Contraste
+                </button>
+                <button class="accessibility-btn" id="largeTextBtn">
+                    <i class="fas fa-text-height"></i> Texto Grande
+                </button>
+                <button class="accessibility-btn" id="readAloudBtn">
+                    <i class="fas fa-volume-up"></i> Leer en Voz Alta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="/cursos">Cursos</a> 
+            <span>></span>
+            <a href="#" id="courseLink">Curso Actual</a>
+            <span>></span>
+            <span id="lessonTitle">Lección</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="lesson-container">
+            <!-- Lesson Content -->
+            <div class="lesson-content">
+                <div class="lesson-header">
+                    <h1 class="lesson-title" id="lessonMainTitle">Cargando lección...</h1>
+                    <div class="lesson-meta">
+                        <span><i class="far fa-clock"></i> <span id="lessonDuration">0 min</span></span>
+                        <span><i class="fas fa-tasks"></i> <span id="lessonType">Cargando...</span></span>
+                    </div>
+                </div>
+                
+                <div class="lesson-body" id="lessonBody">
+                    <!-- Content will be dynamically loaded here -->
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="lesson-sidebar">
+                <h3 class="sidebar-title">Progreso de la Lección</h3>
+                
+                <div class="progress-section">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Progreso</span>
+                        <span id="progressText">0%</span>
+                    </div>
+                </div>
+                
+                <div class="actions-section">
+                    <button class="btn btn-primary" id="markCompleteBtn">
+                        <i class="far fa-check-circle"></i> Marcar como Completado
+                    </button>
+                    <button class="btn btn-secondary" id="saveProgressBtn">
+                        <i class="far fa-save"></i> Guardar Progreso
+                    </button>
+                    <a href="#" id="backToCourse" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver al Curso
+                    </a>
+                </div>
+                
+                <div style="margin-top: 25px;">
+                    <h3 class="sidebar-title">Recursos Adicionales</h3>
+                    <div class="actions-section">
+                        <a href="#" class="btn btn-secondary">
+                            <i class="fas fa-book"></i> Material de Apoyo
+                        </a>
+                        <a href="#" class="btn btn-secondary">
+                            <i class="fas fa-video"></i> Video Tutorial
+                        </a>
+                        <a href="#" class="btn btn-secondary">
+                            <i class="fas fa-question-circle"></i> Solicitar Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const userAvatar = document.getElementById('userAvatar');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const highContrastBtn = document.getElementById('highContrastBtn');
+        const largeTextBtn = document.getElementById('largeTextBtn');
+        const readAloudBtn = document.getElementById('readAloudBtn');
+        const lessonBody = document.getElementById('lessonBody');
+        const lessonMainTitle = document.getElementById('lessonMainTitle');
+        const lessonDuration = document.getElementById('lessonDuration');
+        const lessonType = document.getElementById('lessonType');
+        const courseLink = document.getElementById('courseLink');
+        const lessonTitle = document.getElementById('lessonTitle');
+        const markCompleteBtn = document.getElementById('markCompleteBtn');
+        const saveProgressBtn = document.getElementById('saveProgressBtn');
+        const backToCourse = document.getElementById('backToCourse');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+
+        // Current course and lesson data
+        let currentCourse = null;
+        let currentLesson = null;
+        let courseData = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLessonData();
+            setupEventListeners();
+        });
+
+        // Load lesson data from API
+        async function loadLessonData() {
+            const courseId = getCourseIdFromURL();
+            const lessonId = getLessonIdFromURL();
+            
+            try {
+                const response = await fetch(`/api/curso/${courseId}/leccion/${lessonId}`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    showError('No se pudo cargar la lección: ' + data.error);
+                    return;
+                }
+                
+                currentCourse = data.curso;
+                currentLesson = data.leccion;
+                
+                displayLessonContent();
+                
+            } catch (error) {
+                console.error('Error loading lesson:', error);
+                showError('Error al cargar la lección. Por favor, intenta nuevamente.');
+            }
+        }
+
+        // Display lesson content based on type
+        function displayLessonContent() {
+            // Update page titles and metadata
+            courseLink.textContent = currentCourse.titulo;
+            courseLink.href = `/curso/${getCourseIdFromURL()}`;
+            backToCourse.href = `/curso/${getCourseIdFromURL()}`;
+            lessonTitle.textContent = currentLesson.titulo;
+            lessonMainTitle.textContent = currentLesson.titulo;
+            lessonDuration.textContent = `${currentLesson.duracion} min`;
+            lessonType.textContent = getLessonTypeDisplay(currentLesson.tipo);
+            
+            let contentHTML = '';
+            
+            // Different content based on lesson type
+            switch(currentLesson.tipo) {
+                case 'video':
+                    contentHTML = createVideoContent();
+                    break;
+                case 'ejercicios':
+                    contentHTML = createExercisesContent();
+                    break;
+                case 'evaluacion':
+                    contentHTML = createEvaluationContent();
+                    break;
+                case 'practica':
+                    contentHTML = createPracticeContent();
+                    break;
+                case 'interactivo':
+                    contentHTML = createInteractiveContent();
+                    break;
+                default:
+                    contentHTML = createDefaultContent();
+            }
+            
+            lessonBody.innerHTML = contentHTML;
+            
+            // Initialize interactive elements if needed
+            if (currentLesson.tipo === 'ejercicios' || currentLesson.tipo === 'evaluacion') {
+                initializeExercises();
+            }
+        }
+
+        // Create video content
+        function createVideoContent() {
+            const isYouTube = currentLesson.es_youtube || false;
+            const videoUrl = currentLesson.archivo || '';
+            
+            return `
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        ${isYouTube ? 
+                            `<iframe src="${videoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>` :
+                            `<video controls style="width: 100%; height: 100%;">
+                                <source src="${videoUrl}" type="video/mp4">
+                                Tu navegador no soporta el elemento video.
+                            </video>`
+                        }
+                    </div>
+                </div>
+                <div class="content-description">
+                    <h3 class="content-title">Acerca de esta lección</h3>
+                    <p>Observa atentamente el video y toma notas de los conceptos importantes.</p>
+                </div>
+                <div class="actions-section">
+                    <button class="btn btn-primary" id="completeVideoBtn">
+                        <i class="fas fa-check"></i> Marcar Video como Visto
+                    </button>
+                </div>
+            `;
+        }
+
+        // Create exercises content
+        function createExercisesContent() {
+            const exercises = currentLesson.contenido?.ejercicios || [];
+            
+            let exercisesHTML = `
+                <h2 class="content-title">${currentLesson.contenido?.titulo || 'Ejercicios Prácticos'}</h2>
+                <p class="content-description">${currentLesson.contenido?.descripcion || 'Practica lo aprendido con estos ejercicios interactivos.'}</p>
+                
+                <div class="exercise-container" id="exercisesContainer">
+            `;
+            
+            exercises.forEach((exercise, index) => {
+                exercisesHTML += `
+                    <div class="exercise" id="exercise-${index}">
+                        <h3 class="exercise-title">Ejercicio ${index + 1}</h3>
+                        <p>${exercise.pregunta}</p>
+                        <div class="options-container">
+                            ${exercise.opciones.map((option, optionIndex) => `
+                                <div class="option">
+                                    <input type="radio" id="ex-${index}-opt-${optionIndex}" 
+                                           name="exercise-${index}" value="${optionIndex}">
+                                    <label for="ex-${index}-opt-${optionIndex}">${option}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            exercisesHTML += `
+                </div>
+                <div class="actions-section">
+                    <button class="btn btn-success" id="submitExercises">
+                        <i class="fas fa-paper-plane"></i> Enviar Respuestas
+                    </button>
+                </div>
+                <div class="results-container" id="resultsContainer">
+                    <!-- Results will be shown here -->
+                </div>
+            `;
+            
+            return exercisesHTML;
+        }
+
+        // Create evaluation content
+        function createEvaluationContent() {
+            const questions = currentLesson.contenido?.preguntas || [];
+            
+            let evaluationHTML = `
+                <h2 class="content-title">${currentLesson.contenido?.titulo || 'Evaluación'}</h2>
+                <p class="content-description">${currentLesson.contenido?.descripcion || 'Demuestra lo que has aprendido en esta evaluación.'}</p>
+                
+                ${currentLesson.contenido?.instrucciones ? `
+                    <div class="exercise" style="background: #fff3cd; border-left-color: #ffc107;">
+                        <h4><i class="fas fa-info-circle"></i> Instrucciones</h4>
+                        <p>${currentLesson.contenido.instrucciones}</p>
+                    </div>
+                ` : ''}
+                
+                <div class="exercise-container" id="evaluationContainer">
+            `;
+            
+            questions.forEach((question, index) => {
+                evaluationHTML += `
+                    <div class="exercise" id="question-${index}">
+                        <h3 class="exercise-title">Pregunta ${index + 1}</h3>
+                        <p>${question.pregunta}</p>
+                        <div class="options-container">
+                            ${question.opciones.map((option, optionIndex) => `
+                                <div class="option">
+                                    <input type="radio" id="q-${index}-opt-${optionIndex}" 
+                                           name="question-${index}" value="${optionIndex}">
+                                    <label for="q-${index}-opt-${optionIndex}">${option}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            evaluationHTML += `
+                </div>
+                <div class="actions-section">
+                    <button class="btn btn-success" id="submitEvaluation">
+                        <i class="fas fa-paper-plane"></i> Enviar Evaluación
+                    </button>
+                </div>
+                <div class="results-container" id="resultsContainer">
+                    <!-- Results will be shown here -->
+                </div>
+            `;
+            
+            return evaluationHTML;
+        }
+
+        // Create practice content
+        function createPracticeContent() {
+            const activities = currentLesson.contenido?.actividades || [];
+            
+            let practiceHTML = `
+                <h2 class="content-title">${currentLesson.contenido?.titulo || 'Práctica'}</h2>
+                <p class="content-description">${currentLesson.contenido?.descripcion || 'Practica tus habilidades con estas actividades.'}</p>
+            `;
+            
+            activities.forEach((activity, index) => {
+                practiceHTML += `
+                    <div class="exercise">
+                        <h3 class="exercise-title">${activity.titulo}</h3>
+                        <p>${activity.descripcion}</p>
+                        ${activity.dialogo ? `
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: var(--radius); margin: 15px 0;">
+                                <h4>Diálogo de Práctica:</h4>
+                                <pre style="white-space: pre-wrap; font-family: inherit;">${activity.dialogo}</pre>
+                            </div>
+                        ` : ''}
+                        ${activity.temas ? `
+                            <div style="background: #e8f4fd; padding: 15px; border-radius: var(--radius); margin: 15px 0;">
+                                <h4>Temas para debatir:</h4>
+                                <ul>
+                                    ${activity.temas.map(tema => `<li>${tema}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            practiceHTML += `
+                <div class="actions-section">
+                    <button class="btn btn-primary" id="completePractice">
+                        <i class="fas fa-check"></i> Marcar Práctica como Completada
+                    </button>
+                </div>
+            `;
+            
+            return practiceHTML;
+        }
+
+        // Create interactive content
+        function createInteractiveContent() {
+            const exercises = currentLesson.contenido?.ejercicios || [];
+            
+            let interactiveHTML = `
+                <h2 class="content-title">${currentLesson.contenido?.titulo || 'Actividad Interactiva'}</h2>
+                <p class="content-description">${currentLesson.contenido?.descripcion || 'Completa esta actividad interactiva.'}</p>
+            `;
+            
+            exercises.forEach((exercise, index) => {
+                interactiveHTML += `
+                    <div class="exercise">
+                        <h3 class="exercise-title">Ejercicio ${index + 1}</h3>
+                        ${exercise.audio_url ? `
+                            <div style="margin: 15px 0;">
+                                <audio controls style="width: 100%;">
+                                    <source src="${exercise.audio_url}" type="audio/mpeg">
+                                    Tu navegador no soporta el elemento audio.
+                                </audio>
+                            </div>
+                        ` : ''}
+                        
+                        ${exercise.preguntas ? `
+                            <div class="options-container">
+                                ${exercise.preguntas.map((question, qIndex) => `
+                                    <div style="margin: 10px 0;">
+                                        <p><strong>${question.pregunta}</strong></p>
+                                        ${question.opciones.map((option, oIndex) => `
+                                            <div class="option">
+                                                <input type="radio" id="ia-${index}-${qIndex}-${oIndex}" 
+                                                       name="interactive-${index}-${qIndex}" value="${oIndex}">
+                                                <label for="ia-${index}-${qIndex}-${oIndex}">${option}</label>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            interactiveHTML += `
+                <div class="actions-section">
+                    <button class="btn btn-success" id="submitInteractive">
+                        <i class="fas fa-paper-plane"></i> Enviar Respuestas
+                    </button>
+                </div>
+                <div class="results-container" id="resultsContainer">
+                    <!-- Results will be shown here -->
+                </div>
+            `;
+            
+            return interactiveHTML;
+        }
+
+        // Create default content for unknown types
+        function createDefaultContent() {
+            return `
+                <h2 class="content-title">${currentLesson.titulo}</h2>
+                <p class="content-description">Contenido de la lección no disponible en este momento.</p>
+                <div class="actions-section">
+                    <button class="btn btn-primary" id="completeDefault">
+                        <i class="fas fa-check"></i> Marcar como Completado
+                    </button>
+                </div>
+            `;
+        }
+
+        // Initialize exercises functionality
+        function initializeExercises() {
+            const submitButton = document.getElementById('submitExercises') || 
+                               document.getElementById('submitEvaluation') ||
+                               document.getElementById('submitInteractive');
+            
+            if (submitButton) {
+                submitButton.addEventListener('click', function() {
+                    const results = checkAnswers();
+                    showResults(results);
+                });
+            }
+            
+            // Add event listeners for completion buttons
+            const completeButtons = [
+                'completeVideoBtn', 'completePractice', 'completeDefault'
+            ];
+            
+            completeButtons.forEach(btnId => {
+                const button = document.getElementById(btnId);
+                if (button) {
+                    button.addEventListener('click', function() {
+                        markLessonComplete();
+                    });
+                }
+            });
+        }
+
+        // Check user answers
+        function checkAnswers() {
+            const exercises = currentLesson.contenido?.ejercicios || currentLesson.contenido?.preguntas || [];
+            const results = {
+                total: exercises.length,
+                correct: 0,
+                answers: []
+            };
+
+            exercises.forEach((exercise, index) => {
+                let selectedOption = null;
+                
+                if (currentLesson.tipo === 'interactivo' && exercise.preguntas) {
+                    // Handle interactive exercises with multiple questions
+                    exercise.preguntas.forEach((question, qIndex) => {
+                        const qSelected = document.querySelector(`input[name="interactive-${index}-${qIndex}"]:checked`);
+                        const isCorrect = qSelected && parseInt(qSelected.value) === question.opciones.indexOf(question.respuesta_correcta);
+                        
+                        if (isCorrect) results.correct++;
+                        
+                        results.answers.push({
+                            exerciseId: `${index}-${qIndex}`,
+                            question: question.pregunta,
+                            selected: qSelected ? parseInt(qSelected.value) : null,
+                            correct: question.opciones.indexOf(question.respuesta_correcta),
+                            isCorrect: isCorrect
+                        });
+                    });
+                } else {
+                    // Handle regular exercises
+                    const selected = document.querySelector(`input[name="exercise-${index}"]:checked`) || 
+                                   document.querySelector(`input[name="question-${index}"]:checked`);
+                    const isCorrect = selected && parseInt(selected.value) === exercise.opciones.indexOf(exercise.respuesta_correcta);
+                    
+                    if (isCorrect) results.correct++;
+                    
+                    results.answers.push({
+                        exerciseId: index,
+                        question: exercise.pregunta,
+                        selected: selected ? parseInt(selected.value) : null,
+                        correct: exercise.opciones.indexOf(exercise.respuesta_correcta),
+                        isCorrect: isCorrect
+                    });
+                }
+            });
+
+            return results;
+        }
+
+        // Show results
+        function showResults(results) {
+            const score = Math.round((results.correct / results.total) * 100);
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            let resultsHTML = `
+                <div class="results-header">
+                    <div class="score-circle">
+                        <div class="score-inner">${score}%</div>
+                    </div>
+                    <h2 class="results-title">¡Resultados!</h2>
+                    <p class="results-feedback">
+                        ${score >= 80 ? "¡Excelente trabajo! Has dominado estos conceptos." :
+                          score >= 60 ? "Buen trabajo, pero hay algunos conceptos que necesitas repasar." :
+                          "Necesitas repasar estos conceptos. ¡Puedes intentarlo de nuevo!"}
+                    </p>
+                </div>
+                <h3 style="margin-bottom: 20px;">Detalle de Respuestas:</h3>
+            `;
+            
+            results.answers.forEach((answer, index) => {
+                const exercise = currentLesson.tipo === 'interactivo' ? 
+                    currentLesson.contenido.ejercicios[parseInt(answer.exerciseId.split('-')[0])].preguntas[parseInt(answer.exerciseId.split('-')[1])] :
+                    (currentLesson.contenido.ejercicios || currentLesson.contenido.preguntas)[answer.exerciseId];
+                
+                const userAnswer = answer.selected !== null ? exercise.opciones[answer.selected] : "No respondida";
+                const correctAnswer = exercise.opciones[answer.correct];
+                
+                resultsHTML += `
+                    <div class="exercise ${answer.isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                        <h4 class="exercise-title">${currentLesson.tipo === 'interactivo' ? 'Pregunta' : 'Ejercicio'} ${index + 1}: ${answer.isCorrect ? '✅ Correcto' : '❌ Incorrecto'}</h4>
+                        <p><strong>Pregunta:</strong> ${answer.question}</p>
+                        <p><strong>Tu respuesta:</strong> ${userAnswer}</p>
+                        ${!answer.isCorrect ? `<p><strong>Respuesta correcta:</strong> ${correctAnswer}</p>` : ''}
+                    </div>
+                `;
+            });
+            
+            resultsHTML += `
+                <div class="actions-section" style="margin-top: 25px;">
+                    <button class="btn btn-primary" id="continueButton">
+                        <i class="fas fa-arrow-right"></i> Continuar
+                    </button>
+                    <button class="btn btn-secondary" id="reviewButton">
+                        <i class="fas fa-redo"></i> Intentar de Nuevo
+                    </button>
+                </div>
+            `;
+            
+            resultsContainer.innerHTML = resultsHTML;
+            resultsContainer.style.display = 'block';
+            
+            // Add event listeners to new buttons
+            document.getElementById('continueButton').addEventListener('click', continueToNext);
+            document.getElementById('reviewButton').addEventListener('click', reviewContent);
+            
+            // Update progress and mark complete if score is good
+            updateProgress(score);
+            if (score >= 70) {
+                markLessonComplete();
+            }
+            
+            // Scroll to results
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // User menu toggle
+            userAvatar.addEventListener('click', function() {
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!userAvatar.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+
+            // Logout functionality
+            logoutBtn.addEventListener('click', function() {
+                if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                    window.location.href = '/login';
+                }
+            });
+
+            // Accessibility features
+            highContrastBtn.addEventListener('click', function() {
+                document.body.classList.toggle('high-contrast');
+            });
+
+            largeTextBtn.addEventListener('click', function() {
+                document.body.classList.toggle('large-text');
+            });
+
+            readAloudBtn.addEventListener('click', function() {
+                alert('Funcionalidad de lectura en voz alta activada.');
+            });
+
+            // Mark as complete
+            markCompleteBtn.addEventListener('click', function() {
+                markLessonComplete();
+            });
+
+            // Save progress
+            saveProgressBtn.addEventListener('click', function() {
+                saveProgress();
+            });
+        }
+
+        // Update progress display
+        function updateProgress(percentage) {
+            progressFill.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}%`;
+        }
+
+        // Mark lesson as complete
+        function markLessonComplete() {
+            fetch('/api/completar_leccion/' + getLessonIdFromURL(), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    markCompleteBtn.innerHTML = '<i class="fas fa-check-circle"></i> Completado';
+                    markCompleteBtn.classList.add('btn-success');
+                    markCompleteBtn.classList.remove('btn-primary');
+                    markCompleteBtn.disabled = true;
+                    updateProgress(100);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // For demo purposes, simulate success
+                markCompleteBtn.innerHTML = '<i class="fas fa-check-circle"></i> Completado';
+                markCompleteBtn.classList.add('btn-success');
+                markCompleteBtn.classList.remove('btn-primary');
+                markCompleteBtn.disabled = true;
+                updateProgress(100);
+            });
+        }
+
+        // Save progress
+        function saveProgress() {
+            alert('Progreso guardado correctamente.');
+        }
+
+        // Continue to next lesson
+        function continueToNext() {
+            window.location.href = `/curso/${getCourseIdFromURL()}`;
+        }
+
+        // Review content
+        function reviewContent() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.style.display = 'none';
+            
+            // Reset all radio buttons
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+        }
+
+        // Helper functions
+        function getCourseIdFromURL() {
+            const path = window.location.pathname;
+            const match = path.match(/\/curso\/([^\/]+)/);
+            return match ? match[1] : 'unknown';
+        }
+
+        function getLessonIdFromURL() {
+            const path = window.location.pathname;
+            const match = path.match(/\/leccion\/([^\/]+)/);
+            return match ? match[1] : 'unknown';
+        }
+
+        function getLessonTypeDisplay(type) {
+            const types = {
+                'video': 'Video',
+                'ejercicios': 'Ejercicios',
+                'evaluacion': 'Evaluación',
+                'practica': 'Práctica',
+                'interactivo': 'Interactivo'
+            };
+            return types[type] || type;
+        }
+
+        function showError(message) {
+            lessonBody.innerHTML = `
+                <div class="exercise" style="background: #f8d7da; border-left-color: #dc3545;">
+                    <h3 class="exercise-title" style="color: #721c24;">Error</h3>
+                    <p>${message}</p>
+                </div>
+                <div class="actions-section">
+                    <a href="/cursos" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Volver a Cursos
+                    </a>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

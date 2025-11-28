@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos - IncluLearn</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+        }
+        .course-card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        .hero-courses {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 60px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap"></i> IncluLearn
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Inicio</a>
+                <a class="nav-link active" href="/cursos">Cursos</a>
+                <a class="nav-link" href="/resolver">Resolver Problemas</a>
+                <a class="nav-link" href="/recomendaciones">Recomendaciones</a>
+                <a class="nav-link" href="/login">Iniciar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-courses">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Nuestros Cursos</h1>
+            <p class="lead">Aprende a tu propio ritmo con contenido accesible e inclusivo</p>
+        </div>
+    </section>
+
+    <!-- Cursos Section -->
+    <section class="py-5">
+        <div class="container">
+            <!-- Filtros -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Buscar cursos..." id="searchInput">
+                        <button class="btn btn-outline-primary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex gap-2 justify-content-end">
+                        <select class="form-select" style="width: auto;" id="categoryFilter">
+                            <option value="">Todas las categorías</option>
+                            <option value="Matemáticas">Matemáticas</option>
+                            <option value="Programación">Programación</option>
+                            <option value="Ciencias">Ciencias</option>
+                        </select>
+                        <select class="form-select" style="width: auto;" id="levelFilter">
+                            <option value="">Todos los niveles</option>
+                            <option value="Principiante">Principiante</option>
+                            <option value="Intermedio">Intermedio</option>
+                            <option value="Avanzado">Avanzado</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cursos Grid -->
+            <div class="row" id="cursosList">
+                <!-- Los cursos se cargan aquí dinámicamente -->
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="text-center my-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando cursos...</span>
+                </div>
+                <p class="mt-2">Cargando cursos...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+                Error al cargar los cursos. Por favor, intenta nuevamente.
+            </div>
+        </div>
+    </section>
+
+    <!-- Accessibility Features -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-4">
+                <h3>♿ Características de Accesibilidad</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-closed-captioning fa-2x text-primary mb-2"></i>
+                    <p>Subtítulos en todos los videos</p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-volume-up fa-2x text-primary mb-2"></i>
+                    <p>Descripciones de audio</p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-palette fa-2x text-primary mb-2"></i>
+                    <p>Modo alto contraste</p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-keyboard fa-2x text-primary mb-2"></i>
+                    <p>Navegación por teclado</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Cargar cursos al iniciar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCursos();
+        });
+
+        function loadCursos() {
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const cursosList = document.getElementById('cursosList');
+
+            fetch('/api/cursos')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta del servidor');
+                    }
+                    return response.json();
+                })
+                .then(cursos => {
+                    loading.style.display = 'none';
+                    errorMessage.classList.add('d-none');
+                    
+                    if (cursos && cursos.length > 0) {
+                        renderCursos(cursos);
+                    } else {
+                        cursosList.innerHTML = `
+                            <div class="col-12 text-center">
+                                <div class="alert alert-info">
+                                    <h4>📚 Próximamente más cursos</h4>
+                                    <p>Estamos trabajando en agregar más contenido educativo accesible.</p>
+                                    <p>Mientras tanto, puedes probar nuestras otras herramientas.</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error cargando cursos:', error);
+                    loading.style.display = 'none';
+                    errorMessage.classList.remove('d-none');
+                    
+                    // Mostrar cursos de ejemplo en caso de error
+                    const cursosEjemplo = [
+                        {
+                            id: '1',
+                            titulo: 'Pensamiento matematico',
+                            descripcion: 'Curso introductorio de matemáticas con enfoque accesible',
+                            categoria: 'Matemáticas',
+                            nivel: 'Principiante',
+                            duracion: '8 horas'
+                        },
+                        {
+                            id: '2',
+                            titulo: 'construye aplicaciones web', 
+                            descripcion: 'Aprende programación desde cero con Python',
+                            categoria: 'Programación',
+                            nivel: 'Intermedio',
+                            duracion: '12 horas'
+                        },
+                        {
+                            id: '3',
+                            titulo: 'ingles v',
+                            descripcion: 'aprende un nuevo idioma de forma sencilla',
+                            categoria: 'Idiomas',
+                            nivel: 'avanzado', 
+                            duracion: '10 horas'
+                        },
+                        {
+                            id: '4',
+                            titulo: 'la energia en los procesos de la vida diaria',
+                            descripcion: 'Curso de como funciona la ciencia en nuestro entorno',
+                            categoria: 'Ciencias',
+                            nivel: 'Principiante',
+                            duracion: '8 horas'
+                        },
+                        {
+                            id: '5',
+                            titulo: 'implementa aplicaciones web', 
+                            descripcion: 'Aprende programación desde cero con Python',
+                            categoria: 'Programación',
+                            nivel: 'Intermedio',
+                            duracion: '12 horas'
+                        },
+                        {
+                            id: '6',
+                            titulo: 'conciencia historica ll ',
+                            descripcion: 'Descubre la historia de mexico durante el expansionismo capitalista',
+                            categoria: 'historia',
+                            nivel: 'Principiante', 
+                            duracion: '10 horas'
+                        }
+                    ];
+                    renderCursos(cursosEjemplo);
+                });
+        }
+
+        function renderCursos(cursos) {
+            const cursosList = document.getElementById('cursosList');
+            
+            cursosList.innerHTML = cursos.map(curso => `
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card course-card shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-primary">${curso.categoria || 'General'}</span>
+                                <span class="badge bg-secondary">${curso.nivel || 'Principiante'}</span>
+                            </div>
+                            
+                            <h5 class="card-title">${curso.titulo || 'Curso'}</h5>
+                            <p class="card-text text-muted">${curso.descripcion || 'Descripción del curso'}</p>
+                            
+                            <div class="course-features mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-clock"></i> ${curso.duracion || 'Duración variable'}
+                                </small>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="fas fa-closed-captioning"></i> Subtítulos disponibles
+                                </small>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="fas fa-volume-up"></i> Audio descripción
+                                </small>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" onclick="verCurso('${curso.id || curso._id || ''}')">
+                                    <i class="fas fa-play-circle"></i> Comenzar Curso
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="masInformacion('${curso.titulo || ''}')">
+                                    <i class="fas fa-info-circle"></i> Más Información
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function verCurso(cursoId) {
+
+    window.location.href = `/curso/${cursoId}`;
+}
+
+        function masInformacion(tituloCurso) {
+            alert(`📋 Información detallada sobre: ${tituloCurso}\n\n• Contenido accesible\n• Múltiples formatos\n• Evaluaciones adaptativas\n• Soporte inclusivo`);
+        }
+
+        // Filtros de búsqueda
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            filterCursos();
+        });
+
+        document.getElementById('categoryFilter').addEventListener('change', filterCursos);
+        document.getElementById('levelFilter').addEventListener('change', filterCursos);
+
+        function filterCursos() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const level = document.getElementById('levelFilter').value;
+            
+            const courseCards = document.querySelectorAll('.col-md-6.col-lg-4.mb-4');
+            
+            courseCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const courseCategory = card.querySelector('.badge.bg-primary').textContent;
+                const courseLevel = card.querySelector('.badge.bg-secondary').textContent;
+                
+                const matchesSearch = title.includes(searchTerm);
+                const matchesCategory = !category || courseCategory === category;
+                const matchesLevel = !level || courseLevel === level;
+                
+                if (matchesSearch && matchesCategory && matchesLevel) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

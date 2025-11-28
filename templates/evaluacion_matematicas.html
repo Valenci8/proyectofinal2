@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Final - Pensamiento Matemático | IncluLearn</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --success: #4ade80;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .nav-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .user-menu i {
+            font-size: 1.2rem;
+        }
+        
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .header-bottom a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .evaluation-container {
+            flex: 3;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+        
+        .evaluation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .evaluation-title {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+        
+        .time-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #fff7ed;
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: var(--warning);
+            font-weight: 500;
+        }
+        
+        .time-indicator i {
+            font-size: 1.2rem;
+        }
+        
+        .evaluation-description {
+            background-color: #f0f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .question-container {
+            margin-bottom: 35px;
+        }
+        
+        .question-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: var(--accent);
+            background-color: #f0f9ff;
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background-color: #eef2ff;
+        }
+        
+        .option-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .option.selected .option-circle {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .option-text {
+            font-size: 1.1rem;
+        }
+        
+        .math-expression {
+            font-family: 'Cambria Math', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .sidebar {
+            flex: 1;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            height: fit-content;
+        }
+        
+        .sidebar-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .question-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .question-nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            border-radius: 6px;
+            background-color: var(--light-gray);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .question-nav-item.current {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .question-nav-item.answered {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .progress-container {
+            margin-bottom: 25px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 25%;
+            transition: width 0.5s ease;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .question-nav {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>IncluLearn</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="#"><i class="fas fa-book"></i> Cursos</a></li>
+                    <li><a href="#"><i class="fas fa-tasks"></i> Resolver Problemas</a></li>
+                    <li><a href="#"><i class="fas fa-lightbulb"></i> Recomendaciones</a></li>
+                </ul>
+                <div class="user-menu">
+                    <a href="#"><i class="fas fa-user"></i> Usuario</a>
+                    <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                </div>
+            </div>
+            <div class="header-bottom">
+                <a href="#"><i class="fas fa-arrow-left"></i> Volver a Cursos</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="evaluation-container">
+                <div class="evaluation-header">
+                    <h1 class="evaluation-title">Evaluación Final - Pensamiento Matemático</h1>
+                    <div class="time-indicator">
+                        <i class="fas fa-clock"></i>
+                        <span>45 min evaluación</span>
+                    </div>
+                </div>
+                
+                <div class="evaluation-description">
+                    <p>Demuestra lo que has aprendido en este módulo</p>
+                    <p>Resuelve las siguientes preguntas. Tienes 45 minutos para completar la evaluación.</p>
+                </div>
+                
+                <div class="question-container">
+                    <h2 class="question-title">Pregunta 1</h2>
+                    <p>¿Cuál es el resultado de <span class="math-expression">\( 125 + 378 \)?</span></p>
+                    <div class="options-container">
+                        <div class="option">
+                            <div class="option-circle">A</div>
+                            <div class="option-text"><span class="math-expression">503</span></div>
+                        </div>
+                        <div class="option">
+                            <div class="option-circle">B</div>
+                            <div class="option-text"><span class="math-expression">493</span></div>
+                        </div>
+                        <div class="option">
+                            <div class="option-circle">C</div>
+                            <div class="option-text"><span class="math-expression">513</span></div>
+                        </div>
+                        <div class="option">
+                            <div class="option-circle">D</div>
+                            <div class="option-text"><span class="math-expression">403</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h2 class="question-title">Pregunta 2</h2>
+                    <p>Un triángulo tiene ángulos de <span class="math-expression">\( 45^\circ \)</span> y <span class="math-expression">\( 75^\circ \)</span>. ¿Cuánto mide el tercer ángulo?</p>
+                    <div class="options-container">
+                        <div class="option">
+                            <div class="option-circle">A</div>
+                            <div class="option-text"><span class="math-expression">60°</span></div>
+                        </div>
+                        <div class="option">
+                            <div class="option-circle">B</div>
+                            <div class="option-text"><span class="math-expression">50°</span></div>
+                        </div>
+                        <div class="option">
+                            <div class="option-circle">C</div>
+                            <div class="option-text"><span class="math-expression">70°</span></div>
+                        </div>
+                        <div class="option">
+                            <div class="option-circle">D</div>
+                            <div class="option-text"><span class="math-expression">80°</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary">Enviar Evaluación</button>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <h3 class="sidebar-title">Navegación de Preguntas</h3>
+                <div class="question-nav">
+                    <div class="question-nav-item current">1</div>
+                    <div class="question-nav-item">2</div>
+                    <div class="question-nav-item">3</div>
+                    <div class="question-nav-item">4</div>
+                    <div class="question-nav-item">5</div>
+                    <div class="question-nav-item">6</div>
+                    <div class="question-nav-item">7</div>
+                    <div class="question-nav-item">8</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>Progreso</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-outline">Guardar y Salir</button>
+                    <button class="btn btn-primary">Siguiente Pregunta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>IncluLearn &copy; 2023 - Plataforma de aprendizaje en línea</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const parentContainer = this.closest('.question-container');
+                parentContainer.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                this.classList.add('selected');
+                
+                const questionNumber = parseInt(parentContainer.querySelector('.question-title').textContent.replace('Pregunta ', ''));
+                const navItem = document.querySelectorAll('.question-nav-item')[questionNumber - 1];
+                navItem.classList.add('answered');
+            });
+        });
+        
+        document.querySelectorAll('.question-nav-item').forEach((item, index) => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.question-nav-item').forEach(navItem => {
+                    navItem.classList.remove('current');
+                });
+                this.classList.add('current');
+                console.log(`Mostrando pregunta ${index + 1}`);
+            });
+        });
+    </script>
+</body>
+</html>
