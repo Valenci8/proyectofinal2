@@ -1278,7 +1278,13 @@ def api_recomendaciones():
 # INICIAR FLASK
 # ---------------------------
 
+import os
+
 if __name__ == '__main__':
+    # CONFIGURACIÓN PARA RENDER
+    port = int(os.environ.get('PORT', 5001))
+    host = '0.0.0.0'
+    
     if db:
         print("🚀 IncluLearn con MongoDB")
     else:
@@ -1290,6 +1296,6 @@ if __name__ == '__main__':
     print("🔍 API de lecciones: ACTIVADA")
     print("🔓 Modo testing: APIs funcionan sin login")
     print("🎯 EVALUACIÓN MATEMÁTICAS: Ruta agregada")
-    print("🌐 Servidor en: http://localhost:5001")
+    print(f"🌐 Servidor en: http://{host}:{port}")
     
-    app.run(debug=True, host='127.0.0.1', port=5001, use_reloader=False, threaded=True)
+    app.run(debug=False, host=host, port=port, use_reloader=False, threaded=True)
