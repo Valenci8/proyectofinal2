@@ -6,7 +6,7 @@ import bcrypt
 import os
 from dotenv import load_dotenv
 import ssl
-import certifi
+import certifi  # ← AGREGAR ESTO
 
 load_dotenv()
 
@@ -14,16 +14,17 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 
 # ---------------------------
-# CONEXIÓN A MONGO - SOLUCIÓN DEFINITIVA
+# CONEXIÓN A MONGO - CORRECCIÓN SSL
 # ---------------------------
 db = None
 client = None
 
 try:
-
-     connection_string = 'mongodb+srv://lopezkucinthializethcbtis272_db_user:admin1234@cluster9.1im7xnf.mongodb.net/cluster9'
+    # CORRECCIÓN: Configuración SSL adecuada para MongoDB Atlas
+    connection_string = 'mongodb+srv://lopezkucinthializethcbtis272_db_user:admin1234@cluster9.1im7xnf.mongodb.net/cluster9'
     
-     client = MongoClient(
+    # Opción 1: Conexión con SSL seguro (RECOMENDADA)
+    client = MongoClient(
         connection_string,
         tls=True,
         tlsCAFile=certifi.where(),  # Usar certificados CA actualizados
@@ -35,7 +36,7 @@ try:
         maxPoolSize=50
     )
     
-     # Verificar conexión
+    # Verificar conexión
     client.admin.command('ping')
     db = client.inclusivelearn
     print("✅ Conectado a MongoDB Atlas correctamente con SSL seguro")
@@ -43,8 +44,6 @@ try:
 except Exception as e:
     print(f"❌ Error conectando a MongoDB: {e}")
     print("⚠️ Intentando conexión alternativa...")
-    
-
 # ---------------------------
 # RUTAS HTML
 # ---------------------------
@@ -1305,6 +1304,7 @@ if __name__ == '__main__':
     print(f"🌐 Servidor en: http://{host}:{port}")
     
     app.run(debug=False, host=host, port=port, use_reloader=False, threaded=True)
+
 
 
 
