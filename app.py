@@ -6,7 +6,7 @@ import bcrypt
 import os
 from dotenv import load_dotenv
 import ssl
-import certifi
+import certifi  # ← AGREGAR ESTO
 
 load_dotenv()
 
@@ -44,6 +44,32 @@ try:
 except Exception as e:
     print(f"❌ Error conectando a MongoDB: {e}")
     print("⚠️ Intentando conexión alternativa...")
+    
+    try:
+        # Opción 2: Conexión alternativa sin verificación estricta SSL (solo desarrollo)
+        # ATENCIÓN: Esta opción es menos segura, solo para desarrollo
+        client = MongoClient(
+            connection_string,
+            tls=True,
+            tlsAllowInvalidCertificates=False,  # Cambiado de True a False
+            retryWrites=True,
+            w='majority',
+            connectTimeoutMS=30000,
+            socketTimeoutMS=30000,
+            serverSelectionTimeoutMS=30000
+        )
+        
+        client.admin.command('ping')
+        db = client.inclusivelearn
+        print("✅ Conectado a MongoDB Atlas con configuración alternativa")
+        
+    except Exception as e2:
+        print(f"❌ Error en conexión alternativa: {e2}")
+        print("🔄 MODO SEGURO: Usando datos locales sin MongoDB")
+        db = None
+        client = None
+
+# El resto del código permanece EXACTAMENTE IGUAL...
 # ---------------------------
 # RUTAS HTML
 # ---------------------------
@@ -1304,6 +1330,7 @@ if __name__ == '__main__':
     print(f"🌐 Servidor en: http://{host}:{port}")
     
     app.run(debug=False, host=host, port=port, use_reloader=False, threaded=True)
+
 
 
 
