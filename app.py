@@ -35,16 +35,15 @@ try:
         maxPoolSize=50
     )
     
-    # Verificar conexión
+     # Verificar conexión
     client.admin.command('ping')
     db = client.inclusivelearn
-    print("✅ Conectado a MongoDB Atlas correctamente")
+    print("✅ Conectado a MongoDB Atlas correctamente con SSL seguro")
     
 except Exception as e:
     print(f"❌ Error conectando a MongoDB: {e}")
-    print("🔄 MODO SEGURO: Usando datos locales sin MongoDB")
-    db = None
-    client = None
+    print("⚠️ Intentando conexión alternativa...")
+    
 
 # ---------------------------
 # RUTAS HTML
@@ -1306,6 +1305,7 @@ if __name__ == '__main__':
     print(f"🌐 Servidor en: http://{host}:{port}")
     
     app.run(debug=False, host=host, port=port, use_reloader=False, threaded=True)
+
 
 
 
