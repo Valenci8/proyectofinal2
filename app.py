@@ -5,6 +5,8 @@ from datetime import datetime
 import bcrypt
 import os
 from dotenv import load_dotenv
+import ssl
+import certifi
 
 load_dotenv()
 
@@ -1299,5 +1301,6 @@ if __name__ == '__main__':
     print(f"🌐 Servidor en: http://{host}:{port}")
     
     app.run(debug=False, host=host, port=port, use_reloader=False, threaded=True)
+
 
 
