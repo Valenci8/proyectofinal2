@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY', 'clave_secreta_por_defecto')
+app.secret_key = os.getenv('SECRET_KEY')
 
 # ---------------------------
 # CONEXIÓN A MONGO - SOLUCIÓN DEFINITIVA
@@ -20,7 +20,7 @@ client = None
 try:
     # Conexión mejorada con manejo de SSL
     client = MongoClient(
-        'mongodb+srv://lopezkucinthializethcbtis272_db_user:admin1234@cluster9.1im7xnf.mongodb.net/inclulearn5',
+        'mongodb+srv://lopezkucinthializethcbtis272_db_user:admin1234@cluster9.1im7xnf.mongodb.net/cluster9',
         tls=True,
         tlsAllowInvalidCertificates=True,  # Esto soluciona el problema SSL
         connectTimeoutMS=30000,
@@ -1299,4 +1299,5 @@ if __name__ == '__main__':
     print(f"🌐 Servidor en: http://{host}:{port}")
     
     app.run(debug=False, host=host, port=port, use_reloader=False, threaded=True)
+
 
