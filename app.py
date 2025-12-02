@@ -20,7 +20,7 @@ client = None
 try:
     # Conexión mejorada con manejo de SSL
     client = MongoClient(
-        'mongodb+srv://lopezkucinthializethcbtis272_db_user:admin12345@cluster0.tgrwiex.mongodb.net/Aplicacion?retryWrites=true&w=majority',
+        'mongodb+srv://lopezkucinthializethcbtis272_db_user:admin1234@cluster9.1im7xnf.mongodb.net/inclulearn5',
         tls=True,
         tlsAllowInvalidCertificates=True,  # Esto soluciona el problema SSL
         connectTimeoutMS=30000,
@@ -1299,3 +1299,4 @@ if __name__ == '__main__':
     print(f"🌐 Servidor en: http://{host}:{port}")
     
     app.run(debug=False, host=host, port=port, use_reloader=False, threaded=True)
+
