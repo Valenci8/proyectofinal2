@@ -20,14 +20,19 @@ db = None
 client = None
 
 try:
-    # Conexión mejorada con manejo de SSL
-    client = MongoClient(
-        'mongodb+srv://lopezkucinthializethcbtis272_db_user:admin1234@cluster9.1im7xnf.mongodb.net/cluster9',
+
+     connection_string = 'mongodb+srv://lopezkucinthializethcbtis272_db_user:admin1234@cluster9.1im7xnf.mongodb.net/cluster9'
+    
+     client = MongoClient(
+        connection_string,
         tls=True,
-        tlsAllowInvalidCertificates=True,  # Esto soluciona el problema SSL
+        tlsCAFile=certifi.where(),  # Usar certificados CA actualizados
+        retryWrites=True,
+        w='majority',
         connectTimeoutMS=30000,
         socketTimeoutMS=30000,
-        serverSelectionTimeoutMS=30000
+        serverSelectionTimeoutMS=30000,
+        maxPoolSize=50
     )
     
     # Verificar conexión
@@ -1301,6 +1306,7 @@ if __name__ == '__main__':
     print(f"🌐 Servidor en: http://{host}:{port}")
     
     app.run(debug=False, host=host, port=port, use_reloader=False, threaded=True)
+
 
 
 
